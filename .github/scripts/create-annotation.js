@@ -23,16 +23,14 @@ async function createDeployAnnotation() {
     const month = now.getMonth() + 1;
     const day = now.getDate();
     
-    // Annotation data
+    // Título customizado via ENV, ou default
+    const annotationTitle = process.env.ANNOTATION_TITLE || `Deploy: ${repoName}`;
+
     const annotationData = {
-      title: `Deploy: ${repoName}`,
+      title: annotationTitle,
       description: `Commit: ${commitSha.substring(0, 7)} - ${commitMsg}`,
       color: "BLUE",
-      annotationDate: {
-        year: year,
-        month: month,
-        day: day
-      }
+      annotationDate: { year: year, month: month, day: day }
     };
 
     // API URL
@@ -41,9 +39,12 @@ async function createDeployAnnotation() {
 
     // Send REST request
     const response = await makeRequest(apiUrl, 'POST', token, annotationData);
+    console.log('Annotation created:', response);
   } catch (error) {
     if (error.response) {
       console.error('Response details:', error.response);
+    } else {
+      console.error(error);
     }
     process.exit(1);
   }

@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  create-annotation:
+  create-annotations:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -22,9 +22,18 @@ jobs:
       - name: Install dependencies
         run: npm install jsonwebtoken https
 
-      - name: create_ga4_annotation
+      - name: Create Teste1 Annotation
         env:
           GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          ANNOTATION_TITLE: "Teste1 - Mudança ecommerce"
+        run: |
+          node .github/scripts/create-annotation.js
+
+      - name: Create Teste2 Annotation
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          ANNOTATION_TITLE: "Teste2 - Nova Campanha"
         run: |
           node .github/scripts/create-annotation.js
